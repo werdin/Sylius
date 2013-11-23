@@ -118,9 +118,26 @@ Feature: Product options
           And I should see "Option has been successfully updated."
 
     @javascript
+    Scenario: Removing all options when editing the product
+        Given I am editing option "T-Shirt size"
+         When I remove all the options
+          And I press "Save changes"
+         Then I should be editing option "T-Shirt size"
+          And I should see "Please add at least 2 option values."
+
+  @javascript
+      Scenario: Removing one option value
+        Given I am editing option "T-Shirt color"
+         When I remove the option "Green"
+          And I press "Save changes"
+         Then I should be on the option index page
+          And I should see "Option has been successfully updated."
+          But I should not see "Green"
+
     Scenario: Deleted option disappears from the list
         Given I am on the option index page
          When I click "delete" near "T-Shirt color"
-          And I click "delete" from the confirmation modal
+         Then I should see "Do you want to delete this item"
+         When I press "delete"
          Then I should be on the option index page
           And I should not see option with name "T-Shirt color" in that list
