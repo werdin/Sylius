@@ -90,25 +90,25 @@ Feature: Zones
           And "Estonia" should appear on the page
 
     @javascript
+    Scenario: Adding zone member to the existing zone
+        Given I am editing zone "Baltic states"
+         When I remove all the members
+          And I press "Save changes"
+         Then I should be editing zone "Baltic states"
+          And I should see "Please add at least 1 zone member."
+
+    @javascript
+    Scenario: Adding zone member to the existing zone
+       Given I am editing zone "Baltic states"
+        When I remove the member "Latvia"
+         And I press "Save changes"
+        Then I should be editing zone "Baltic states"
+         And I should see "Please add at least 1 zone member."
+
     Scenario: Deleting zone
         Given I am on the page of zone "USA GMT-8"
          When I press "delete"
-          And I click "delete" from the confirmation modal
-         Then I should be on the zone index page
-          And I should see "Zone has been successfully deleted."
-
-    @javascript
-    Scenario: Deleting zone from list
-        Given I am on the zone index page
-         When I click "delete" near "USA GMT-8"
-          And I click "delete" from the confirmation modal
-         Then I should still be on the zone index page
-          And I should see "Zone has been successfully deleted."
-
-    @javascript
-    Scenario: Deleted zone disappears from the list
-        Given I am on the page of zone "Germany"
+         Then I should see "Do you want to delete this item"
          When I press "delete"
-          And I click "delete" from the confirmation modal
          Then I should be on the zone index page
-          But I should not see zone with name "Germany" in that list
+          And I should see "Zone has been successfully deleted."
