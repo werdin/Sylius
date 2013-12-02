@@ -56,7 +56,6 @@ class ProductPropertyTypeSpec extends ObjectBehavior
         ;
 
         $property->getType()->willReturn('checkbox')->shouldBeCalled();
-        $property->getConfiguration()->willReturn(array('label' => 'Some label'))->shouldBeCalled();
 
         $choiceList
             ->getChoices()
@@ -71,7 +70,7 @@ class ProductPropertyTypeSpec extends ObjectBehavior
             ->willReturn($fieldBuilder)
         ;
         $builder
-            ->create('value', 'checkbox', array('label' => 'Some label'))
+            ->create('value', 'checkbox')
             ->shouldBeCalled()
             ->willReturn($fieldBuilder)
         ;
