@@ -17,6 +17,7 @@ use Sylius\Bundle\PromotionsBundle\Action\Registry\PromotionActionRegistryInterf
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Sylius\Bundle\PromotionsBundle\Model\ActionInterface;
 
 /**
  * @author Saša Stamenković <umpirsky@gmail.com>
@@ -52,7 +53,7 @@ class ActionTypeSpec extends ObjectBehavior
             ->willReturn($builder)
         ;
 
-        $this->buildForm($builder, array());
+        $this->buildForm($builder, array('action_type' => ActionInterface::TYPE_FIXED_DISCOUNT));
     }
 
     function it_should_add_build_promotion_action_event_subscriber(
@@ -69,15 +70,21 @@ class ActionTypeSpec extends ObjectBehavior
             ->willReturn($builder)
         ;
 
-        $this->buildForm($builder, array());
+        $this->buildForm($builder, array('action_type' => ActionInterface::TYPE_FIXED_DISCOUNT));
     }
 
     function it_should_define_assigned_data_class(OptionsResolverInterface $resolver)
     {
+        $resolver->setOptional(array(
+                'action_type',
+            ))->shouldBeCalled()
+        ;
+
         $resolver
             ->setDefaults(array(
                 'data_class'        => 'Action',
                 'validation_groups' => array('sylius'),
+                'action_type'       => ActionInterface::TYPE_FIXED_DISCOUNT,
             ))
             ->shouldBeCalled()
         ;

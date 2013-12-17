@@ -14,7 +14,9 @@ namespace spec\Sylius\Bundle\PromotionsBundle\Form\Type;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Bundle\PromotionsBundle\Checker\Registry\RuleCheckerRegistryInterface;
+use Sylius\Bundle\PromotionsBundle\Model\RuleInterface;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -38,10 +40,7 @@ class RuleTypeSpec extends ObjectBehavior
         $this->shouldHaveType('Symfony\Component\Form\AbstractType');
     }
 
-    function it_should_build_form_with_rule_choice_field(
-        FormBuilder $builder,
-        FormFactoryInterface $factory
-    )
+    function it_should_build_form_with_rule_choice_field(FormBuilderInterface $builder, FormFactoryInterface $factory)
     {
         $builder->addEventSubscriber(Argument::any())->willReturn($builder);
         $builder->getFormFactory()->willReturn($factory);
@@ -52,13 +51,10 @@ class RuleTypeSpec extends ObjectBehavior
             ->willReturn($builder)
         ;
 
-        $this->buildForm($builder, array());
+        $this->buildForm($builder, array('rule_type' => RuleInterface::TYPE_ITEM_TOTAL));
     }
 
-    function it_should_add_build_promotion_rule_event_subscriber(
-        FormBuilder $builder,
-        FormFactoryInterface $factory
-    )
+    function it_should_add_build_promotion_rule_event_subscriber(FormBuilderInterface $builder, FormFactoryInterface $factory)
     {
         $builder->add(Argument::any(), Argument::any(), Argument::any())->willReturn($builder);
         $builder->getFormFactory()->willReturn($factory);
@@ -69,19 +65,31 @@ class RuleTypeSpec extends ObjectBehavior
             ->willReturn($builder)
         ;
 
-        $this->buildForm($builder, array());
+        $this->buildForm($builder, array('rule_type' => RuleInterface::TYPE_ITEM_TOTAL));
     }
 
     function it_should_define_assigned_data_class(OptionsResolverInterface $resolver)
     {
         $resolver
+            ->setOptional(array(
+                'rule_type',
+            ))
+            ->shouldBeCalled();
+
+        $resolver
             ->setDefaults(array(
                 'data_class'        => 'Rule',
                 'validation_groups' => array('sylius'),
+                'rule_type'         => RuleInterface::TYPE_ITEM_TOTAL,
             ))
             ->shouldBeCalled()
         ;
 
         $this->setDefaultOptions($resolver);
+    }
+
+    function it_should_have_name()
+    {
+        $this->getName()->shouldReturn('sylius_promotion_rule');
     }
 }

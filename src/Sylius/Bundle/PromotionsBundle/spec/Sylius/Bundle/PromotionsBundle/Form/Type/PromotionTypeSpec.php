@@ -15,6 +15,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Bundle\PromotionsBundle\Action\Registry\PromotionActionRegistryInterface;
 use Sylius\Bundle\PromotionsBundle\Checker\Registry\RuleCheckerRegistry;
+use Sylius\Bundle\PromotionsBundle\Checker\Registry\RuleCheckerRegistryInterface;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -90,21 +91,16 @@ class PromotionTypeSpec extends ObjectBehavior
         ;
 
         $builder
-            ->add('rules', 'collection', Argument::any())
+            ->add('rules', 'sylius_rule_collection', Argument::any())
             ->shouldBeCalled()
             ->willReturn($builder)
         ;
 
         $builder
-            ->add('actions', 'collection', Argument::any())
+            ->add('actions', 'sylius_action_collection', Argument::any())
             ->shouldBeCalled()
             ->willReturn($builder)
         ;
-
-        $checkerRegistry->getCheckers()->willReturn(array());
-        $actionRegistry->getActions()->willReturn(array());
-
-        $builder->setAttribute('prototypes', Argument::any())->shouldBeCalled();
 
         $this->buildForm($builder, array());
     }
@@ -120,5 +116,10 @@ class PromotionTypeSpec extends ObjectBehavior
         ;
 
         $this->setDefaultOptions($resolver);
+    }
+
+    function it_should_have_name()
+    {
+        $this->getName()->shouldReturn('sylius_promotion');
     }
 }
