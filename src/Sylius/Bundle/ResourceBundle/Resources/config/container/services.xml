@@ -26,6 +26,7 @@
 
         <parameter key="sylius.event_subscriber.load_metadata.class">Sylius\Bundle\ResourceBundle\EventListener\LoadMetadataSubscriber</parameter>
         <parameter key="sylius.event_subscriber.kernel_controller.class">Sylius\Bundle\ResourceBundle\EventListener\KernelControllerSubscriber</parameter>
+        <parameter key="sylius.form.extension.collection.class">Sylius\Bundle\ResourceBundle\Form\Extension\CollectionTypeExtension</parameter>
     </parameters>
 
     <services>
@@ -55,6 +56,11 @@
         </service>
         <service id="sylius.event_subscriber.kernel_controller" class="%sylius.event_subscriber.kernel_controller.class%">
             <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="sylius.form.extension.collection"
+                 class="%sylius.form.extension.collection.class%">
+            <tag name="form.type_extension" alias="collection" />
         </service>
 
         <service id="sylius.form.type.entity_to_identifier" class="%sylius.form.type.entity_to_identifier.class%">
