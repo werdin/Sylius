@@ -33,15 +33,23 @@ class DeliveryProvider
 
     /**
      * @param $alias
-     * @return mixed
+     * @return AdapterInterface
      * @throws AdapterNotFound
      */
     public function getAdapter($alias)
     {
-        if (array_key_exists($alias, $this->adapters)) {
+        if (!array_key_exists($alias, $this->adapters)) {
             throw new AdapterNotFound($alias);
         }
 
         return $this->adapters[$alias];
+    }
+
+    /**
+     * @return array
+     */
+    public function getAvailableAdaptersAlias()
+    {
+        return array_keys($this->adapters);
     }
 } 
